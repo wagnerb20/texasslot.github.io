@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Dashboard Técnico - Completo</title>
+  <title>Technician Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,79 +13,76 @@
 </head>
 <body class="bg-gray-100 text-gray-900 font-sans">
 
-  <!-- Área de Login -->
   <div class="max-w-6xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg" id="loginArea">
-    <h1 class="text-2xl font-bold mb-4">Iniciar Sesión</h1>
-    <input id="userRole" placeholder="Escribe 'admin' o 'user'" class="border p-2 w-full mb-4" />
-    <button onclick="login()" class="px-4 py-2 bg-blue-600 text-white rounded">Entrar</button>
+    <h1 class="text-2xl font-bold mb-4">Sign In</h1>
+    <input id="userRole" placeholder="Type 'admin' or 'user'" class="border p-2 w-full mb-4" />
+    <button onclick="login()" class="px-4 py-2 bg-blue-600 text-white rounded">Enter</button>
   </div>
 
-  <!-- Dashboard oculto hasta que se loguee -->
   <div class="max-w-6xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg hidden" id="dashboardArea">
-    <h1 class="text-3xl font-bold mb-6 text-center">📊 Dashboard Técnico</h1>
+    <h1 class="text-3xl font-bold mb-6 text-center">📊 Technician Dashboard</h1>
 
     <div class="flex justify-between items-center mb-4">
       <div class="flex space-x-4">
-        <button class="tab-btn px-4 py-2 bg-blue-600 text-white rounded" data-tab="metrics">Métricas</button>
-        <button class="tab-btn px-4 py-2 bg-blue-600 text-white rounded" data-tab="orders">Órdenes</button>
-        <button class="tab-btn px-4 py-2 bg-blue-600 text-white rounded" data-tab="inventory">Inventario</button>
+        <button class="tab-btn px-4 py-2 bg-blue-600 text-white rounded" data-tab="metrics">Metrics</button>
+        <button class="tab-btn px-4 py-2 bg-blue-600 text-white rounded" data-tab="orders">Orders</button>
+        <button class="tab-btn px-4 py-2 bg-blue-600 text-white rounded" data-tab="inventory">Inventory</button>
       </div>
       <div id="adminActions" class="hidden space-x-2">
-        <button onclick="alertaCorreo()" class="bg-yellow-500 px-3 py-1 rounded text-white">Enviar alerta</button>
-        <button onclick="guardarLocalStorage()" class="bg-gray-700 px-3 py-1 rounded text-white">Guardar Datos</button>
+        <button onclick="alertaCorreo()" class="bg-yellow-500 px-3 py-1 rounded text-white">Send Alert</button>
+        <button onclick="guardarLocalStorage()" class="bg-gray-700 px-3 py-1 rounded text-white">Save Data</button>
       </div>
     </div>
 
     <div id="metrics" class="tab-content active">
-      <h2 class="text-xl font-semibold mb-4">Gráfica de Rendimiento</h2>
+      <h2 class="text-xl font-semibold mb-4">Performance Chart</h2>
       <canvas id="chartMetrics" width="400" height="200"></canvas>
     </div>
 
     <div id="orders" class="tab-content">
-      <h2 class="text-xl font-semibold mb-4">Órdenes de Trabajo</h2>
+      <h2 class="text-xl font-semibold mb-4">Work Orders</h2>
       <table id="ordersTable" class="min-w-full border mb-4">
         <thead class="bg-gray-200">
           <tr>
-            <th class="py-2 px-4 border">Orden</th>
-            <th class="py-2 px-4 border">Fecha</th>
-            <th class="py-2 px-4 border">Estado</th>
+            <th class="py-2 px-4 border">Order</th>
+            <th class="py-2 px-4 border">Date</th>
+            <th class="py-2 px-4 border">Status</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class="py-2 px-4 border">#ORD-1234</td>
             <td class="py-2 px-4 border">2025-06-28</td>
-            <td class="py-2 px-4 border text-green-600">Completada</td>
+            <td class="py-2 px-4 border text-green-600">Completed</td>
           </tr>
         </tbody>
       </table>
-      <button onclick="exportTableToCSV('ordenes.csv')" class="px-4 py-2 bg-green-500 text-white rounded">Exportar CSV</button>
+      <button onclick="exportTableToCSV('orders.csv')" class="px-4 py-2 bg-green-500 text-white rounded">Export CSV</button>
     </div>
 
     <div id="inventory" class="tab-content">
-      <h2 class="text-xl font-semibold mb-4">Inventario</h2>
+      <h2 class="text-xl font-semibold mb-4">Inventory</h2>
       <ul class="list-disc pl-5">
-        <li>5 módulos RAM disponibles</li>
-        <li>3 validadores MEI en stock</li>
-        <li>12 pantallas LCD nuevas</li>
+        <li>5 RAM modules available</li>
+        <li>3 MEI validators in stock</li>
+        <li>12 new LCD screens</li>
       </ul>
     </div>
   </div>
 
-  <!-- Scripts -->
   <script>
     function login() {
-      const role = document.getElementById("userRole").value;
-      if (role === "admin" || role === "user") {
-        localStorage.setItem("role", role);
+      const input = document.getElementById("userRole").value.trim().toLowerCase();
+      if (input === "admin" || input === "user") {
+        localStorage.setItem("role", input);
         document.getElementById("loginArea").classList.add("hidden");
         document.getElementById("dashboardArea").classList.remove("hidden");
-        if (role === "admin") {
+        if (input === "admin") {
           document.getElementById("adminActions").classList.remove("hidden");
         }
         iniciarDashboard();
       } else {
-        alert("Solo se permite 'admin' o 'user'.");
+        alert("Only 'admin' or 'user' is allowed.");
       }
     }
 
@@ -104,9 +101,9 @@
       new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie'],
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
           datasets: [{
-            label: 'Piezas Reparadas',
+            label: 'Parts Repaired',
             data: [5, 8, 6, 10, 7],
             backgroundColor: 'rgba(59,130,246,0.7)'
           }]
@@ -118,16 +115,16 @@
     }
 
     function alertaCorreo() {
-      alert("📧 Simulación de alerta por correo enviada correctamente.");
+      alert("📧 Simulated email alert sent successfully.");
     }
 
     function guardarLocalStorage() {
       const data = {
-        metricas: [5, 8, 6, 10, 7],
-        fecha: new Date().toISOString()
+        metrics: [5, 8, 6, 10, 7],
+        date: new Date().toISOString()
       };
       localStorage.setItem("dashboardData", JSON.stringify(data));
-      alert("💾 Datos guardados en localStorage.");
+      alert("💾 Data saved in localStorage.");
     }
 
     function exportTableToCSV(filename) {
@@ -147,10 +144,9 @@
       document.body.removeChild(downloadLink);
     }
 
-    // Cargar sesión si ya está guardada
     window.addEventListener('DOMContentLoaded', () => {
       const role = localStorage.getItem("role");
-      if (role) {
+      if (role === "admin" || role === "user") {
         document.getElementById("loginArea").classList.add("hidden");
         document.getElementById("dashboardArea").classList.remove("hidden");
         if (role === "admin") {
